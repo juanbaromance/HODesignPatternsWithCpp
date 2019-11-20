@@ -1,5 +1,6 @@
 #include <iostream>
 
+// template function overload/specialization
 // Basic idea of variadic arguments where pattern matching/specicaization  is fully deployed
 template<typename T> bool pair_comparer(T) { return false;}
 template<typename T> bool pair_comparer(T a, T b) {  return a == b; }
@@ -18,16 +19,9 @@ namespace containerdisplay
 
 }
 
-template <typename T1, typename T2>
-struct TFormer {
-public:
-    TFormer( const T1 && _t1, const T2 && _t2 ) : t1( _t1 ), t2(_t2 ) {}
-    auto valueOfT2() const { return __PRETTY_FUNCTION__ + std::string(".") + t2; }
-private:
-  T1 t1;
-  T2 t2;
-};
 
+/* Specialization allows forward declarations */
+template <typename T1, typename T2> struct TFormer;
 template<typename T1>
 struct TFormer< T1, std::string>
 {
@@ -36,6 +30,16 @@ public:
     TFormer(const T1 &&t1_, T2 && arg ) : t1(t1_), t2(arg ){}
     auto valueOfT2() const { return __PRETTY_FUNCTION__ + std::string("..") + t2; }
     auto magicZip(){ return std::make_pair( t1,t2 ); }
+private:
+  T1 t1;
+  T2 t2;
+};
+
+template <typename T1, typename T2>
+struct TFormer {
+public:
+    TFormer( const T1 && _t1, const T2 && _t2 ) : t1( _t1 ), t2(_t2 ) {}
+    auto valueOfT2() const { return __PRETTY_FUNCTION__ + std::string(".") + t2; }
 private:
   T1 t1;
   T2 t2;

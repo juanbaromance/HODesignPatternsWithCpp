@@ -7,10 +7,12 @@ if( ppc )
     set(CMAKE_CXX_FLAGS "-O3 -g")
 else()
     set(tail local)
-    set(CMAKE_CXX_FLAGS "-O3 -std=c++1z")
+    set(CMAKE_CXX_FLAGS "-g -std=c++1z")
 endif()
 
 add_executable(testing.${tail}.x templates.cpp)
+add_executable(testingTemplatedFunctions.${tail}.x templatedFunctions.cpp)
+add_executable(testingVariadics.${tail}.x variadics.cpp)
 
 if( ppc )
     
