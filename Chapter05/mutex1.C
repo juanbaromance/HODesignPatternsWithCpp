@@ -4,6 +4,8 @@
 
 #include "gtest/gtest.h"
 
+namespace {
+
 class mutex_guard {
     public:
     explicit mutex_guard(std::mutex& m) : m_(m), must_unlock_(true) { m_.lock(); }
@@ -45,3 +47,4 @@ TEST(mutex_guard, Reset) {
     EXPECT_TRUE(m.try_lock()); m.unlock();
 }
 
+}

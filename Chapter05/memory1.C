@@ -2,6 +2,9 @@
 
 #include "gtest/gtest.h"
 
+namespace  {
+
+
 struct object_counter {
     static int count;
     static int all_count;
@@ -56,4 +59,6 @@ TEST(Memory, Leak3) {
     }
     EXPECT_EQ(0, object_counter::count);
     EXPECT_EQ(1, object_counter::all_count);
+}
+
 }
