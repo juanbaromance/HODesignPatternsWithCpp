@@ -11,11 +11,11 @@
 
 namespace no_polymorphism {
 class A {
-    public:
+public:
     A() : i_(0) {}
     void f(int i) { i_ += i; }
     int get() const { return i_; }
-    protected:
+protected:
     int i_;
 };
 } // namespace no_polymorphism
@@ -38,40 +38,43 @@ class D : public B {
 
 namespace static_polymorphism {
 template <typename D> class B {
-    public:
+public:
     B() : i_(0) {}
     virtual ~B() {}
     void f(int i) { static_cast<D*>(this)->f(i); }
     int get() const { return i_; }
-    protected:
+protected:
     int i_;
 };
 class D : public B<D> {
-    public:
+public:
     void f(int i) { i_ += i; }
 };
 } // namespace static_polymorphism
 
 namespace static_polymorphism1 {
 template <typename D> class B {
-    public:
+public:
     B() : i_(0) {}
     void f(int i) { derived()->f(i); }
     int get() const { return i_; }
-    protected:
+protected:
     int i_;
-    private:
+private:
     D* derived() { return static_cast<D*>(this); }
 };
-template <typename D> void apply(B<D>* b, int& i) { b->f(++i); }
+template <typename D>
+void apply(B<D>* b, int& i) { b->f(++i); }
 class D : public B<D> {
-    public:
+public:
     void f(int i) { i_ += i; }
 };
 } // namespace static_polymorphism1
 
-void BM_none(benchmark::State& state) {
+void BM_none(benchmark::State& state)
+{
     no_polymorphism::A* a = new no_polymorphism::A;
+
     int i = 0;
     for (auto _ : state) {
         REPEAT(a->f(++i);)
