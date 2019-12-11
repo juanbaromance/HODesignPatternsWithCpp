@@ -47,7 +47,7 @@ class Named {
     operator bool() const { return options_.a_; }
 
     private:
-    const Options options_;
+        const Options options_;
 };
 
 class Aggregate {

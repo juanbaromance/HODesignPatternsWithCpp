@@ -6,12 +6,12 @@
 
 template <typename T, typename Deleter>
 class smartptr {
-    public:
+public:
     smartptr(T* p, Deleter d) : p_(p), d_(d) {}
     ~smartptr() { d_(p_); }
     T* operator->() { return p_; }
     const T* operator->() const { return p_; }
-    private:
+private:
     T* p_;
     Deleter d_;
 };
@@ -27,12 +27,15 @@ class smartptr_te {
         virtual void apply(void* p) { d_(static_cast<T*>(p)); }
         Deleter d_;
     };
-    public:
-    template <typename Deleter> smartptr_te(T* p, Deleter d) : p_(p), d_(new deleter<Deleter>(d)) {}
+
+public:
+    template <typename Deleter> smartptr_te(T* p, Deleter d) :
+          p_(p),
+          d_(new deleter<Deleter>(d)) {}
     ~smartptr_te() { d_->apply(p_); delete d_; }
     T* operator->() { return p_; }
     const T* operator->() const { return p_; }
-    private:
+private:
     T* p_;
     deleter_base* d_;
 };
@@ -48,10 +51,11 @@ class smartptr_te_lb {
         virtual void apply(void* p) { d_(static_cast<T*>(p)); }
         Deleter d_;
     };
-    public:
+
+public:
     template <typename Deleter> smartptr_te_lb(T* p, Deleter d) :
-        p_(p),
-        d_(sizeof(Deleter) > sizeof(buf_) ? new deleter<Deleter>(d) : new (buf_) deleter<Deleter>(d)) 
+          p_(p),
+          d_(sizeof(Deleter) > sizeof(buf_) ? new deleter<Deleter>(d) : new (buf_) deleter<Deleter>(d))
     {}
     ~smartptr_te_lb() {
         d_->apply(p_);
@@ -63,7 +67,7 @@ class smartptr_te_lb {
     }
     T* operator->() { return p_; }
     const T* operator->() const { return p_; }
-    private:
+private:
     T* p_;
     deleter_base* d_;
     char buf_[16];
