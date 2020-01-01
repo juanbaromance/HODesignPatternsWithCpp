@@ -4,7 +4,7 @@ enum Outcome { SUCCESS, FAIL_RETURN, FAIL_THROW };
 
 // Demo disk storage, does nothing useful but may throw exception.
 class Storage {
-    public:
+public:
     Storage() : i_(0) {}
     bool insert(int i, Outcome outcome) {
         if (outcome == FAIL_THROW) throw 0;
@@ -16,14 +16,14 @@ class Storage {
         i_ = i1_;
     }
     int get() const { return i_; }
-    private:
+private:
     int i_;
     int i1_;
 };
 
 // Demo memory index, does nothing useful but may throw exception.
 class Index {
-    public:
+public:
     Index() : i_(0) {}
     bool insert(int i, Outcome outcome) {
         if (outcome == FAIL_THROW) throw 0;
@@ -35,7 +35,7 @@ class Index {
         i_ = i1_;
     }
     int get() const { return i_; }
-    private:
+private:
     int i_;
     int i1_;
 };
@@ -44,16 +44,18 @@ int main() {
     Storage S;
     Index I;
     class StorageGuard {
-        public:
+    public:
         StorageGuard(Storage& S) : S_(S), commit_(false) {}
         ~StorageGuard() { if (!commit_) S_.undo(); }
         void commit() noexcept { commit_ = true; }
-        private:
+    private:
         Storage& S_;
         bool commit_;
         StorageGuard(const StorageGuard&) = delete;
         StorageGuard& operator=(const StorageGuard&) = delete;
     };
+
+
     try {
         S.insert(42, SUCCESS);
         StorageGuard SG(S);

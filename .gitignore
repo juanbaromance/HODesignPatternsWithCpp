@@ -1,0 +1,7 @@
+CMakeLists.txt.user*
+*~
+*.out
+*.x
+*.so
+*.a
+*.pro
